@@ -8,18 +8,24 @@
         * { box-sizing: border-box; }
 
         :root {
-            --primary: #1a2a3a;       /* 經典深藍色背景 */
-            --gold: #c5a059;          /* 金色用於裝飾線條與按鈕 */
+            --primary: #1a2a3a;
+            --gold: #c5a059;
             --glass-bg: rgba(26, 42, 58, 0.75);
             --line-color: rgba(255, 255, 255, 0.15);
         }
 
         body { 
             font-family: "Microsoft JhengHei", "PingFang TC", sans-serif; 
-            margin: 0; color: #fff; background-color: #000; overflow-x: hidden;
+            margin: 0; 
+            color: #ffffff !important; 
+            background-color: #000; 
+            overflow-x: hidden;
         }
 
-        /* --- 背景極慢流動 (90s) --- */
+        /* 移除所有連結預設顏色，防止變藍 */
+        a { color: inherit !important; text-decoration: none !important; }
+
+        /* --- 背景動態 --- */
         .bg-motion-container {
             position: fixed;
             top: 0; left: 0; width: 120%; height: 100%; z-index: -2;
@@ -27,10 +33,9 @@
             background-size: cover; background-position: center;
             animation: backgroundPan 90s linear infinite alternate;
         }
-
         @keyframes backgroundPan { from { transform: translateX(0); } to { transform: translateX(-10%); } }
 
-        /* --- 導覽列與 Logo 左右對齊優化 --- */
+        /* --- 導覽列與標題 (標題模式統一 & 顏色鎖定) --- */
         nav { 
             background: rgba(0, 0, 0, 0.9); padding: 15px 5%; 
             display: flex; justify-content: space-between; align-items: center; 
@@ -39,37 +44,26 @@
         }
 
         .logo-container { 
-            display: inline-flex; 
-            flex-direction: column; 
-            width: fit-content;
+            display: flex; flex-direction: column; 
+            width: 140px; 
         }
-
         .logo-main { 
-            font-size: 1.6rem; 
-            font-weight: bold; 
-            color: #fff; 
-            letter-spacing: 0.5rem; /* 調整中文字間距以增加寬度 */
-            line-height: 1.1;
-            text-align: justify;
-            text-justify: inter-character;
-            margin-right: -0.5rem; /* 抵銷最後一個字的字間距 */
+            font-size: 1.4rem; font-weight: bold; 
+            color: #ffffff !important; 
+            display: flex; justify-content: space-between; 
+            margin-bottom: 4px;
         }
-
         .logo-sub { 
             font-family: "Microsoft JhengHei", sans-serif; 
-            font-size: 0.55rem; 
-            color: #fff; 
-            opacity: 0.9; 
-            margin-top: 3px;
-            font-weight: normal;
-            display: flex;
-            justify-content: space-between; /* 關鍵：讓英文字母自動撐滿寬度以對齊中文 */
-            width: 100%;
-            text-align: center;
-            letter-spacing: 0px;
+            font-size: 0.55rem; font-weight: bold; font-style: normal; 
+            color: var(--gold) !important; 
+            border-top: 1px solid rgba(197, 160, 89, 0.4);
+            padding-top: 3px;
+            display: flex; justify-content: space-between; 
         }
 
-        .nav-links a { text-decoration: none; color: #fff; margin-left: 20px; font-size: 0.9rem; }
+        .nav-links a { margin-left: 20px; font-size: 0.9rem; opacity: 0.8; }
+        .nav-links a:hover { color: var(--gold) !important; opacity: 1; }
 
         /* --- 內容區域 --- */
         section { padding: 130px 8% 60px; }
@@ -77,63 +71,69 @@
             background: var(--glass-bg); padding: 40px; border-radius: 15px;
             backdrop-filter: blur(20px); border: 1px solid rgba(255,255,255,0.1);
         }
-
         .section-header { border-left: 2px solid var(--gold); padding-left: 15px; margin-bottom: 40px; }
-        .section-header h2 { font-size: 1.8rem; color: var(--gold); margin: 0; letter-spacing: 4px; }
+        .section-header h2 { font-size: 1.8rem; color: var(--gold) !important; margin: 0; letter-spacing: 4px; }
 
-        /* --- 案例介紹：立即歸位邏輯 --- */
+        /* --- 案例介紹動態 --- */
         .project-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 30px; }
-        
         .project-item { 
             position: relative; border-radius: 10px; overflow: hidden; height: 450px; 
             background: #000; border: 1px solid rgba(255,255,255,0.1); cursor: pointer;
         }
-
+        
         .project-item img { 
             width: 100%; height: 180%; object-fit: cover; 
             position: absolute; bottom: 0; left: 0; opacity: 0.6;
-            transform: translateY(0);
+            transform: translateY(0); transition: none; 
         }
 
-        /* 移入慢滑，移出立即跳回 */
-        .project-item:hover img, 
-        .project-item:active img { 
-            opacity: 1; 
-            transform: translateY(40%); 
-            transition: transform 6s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.5s;
+        /* 電腦版觸發 */
+        @media (min-width: 1025px) {
+            .project-item:hover img { 
+                opacity: 1; 
+                transform: translateY(40%); 
+                transition: transform 6s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.5s; 
+            }
         }
 
-        .project-item img { transition: none; }
+        /* 手機版觸發 */
+        @media (max-width: 1024px) {
+            .project-item.is-active img { 
+                opacity: 1; 
+                transform: translateY(40%); 
+                transition: transform 6s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.5s; 
+            }
+            .logo-container { width: 120px; }
+            .logo-main { font-size: 1.2rem; }
+            .logo-sub { font-size: 0.45rem; }
+        }
 
         .project-info { 
             position: absolute; bottom: 0; width: 100%; 
             background: linear-gradient(transparent, rgba(0,0,0,0.95)); padding: 25px; z-index: 2;
         }
-        .project-info h3 { color: #fff; margin: 0; font-size: 1.3rem; letter-spacing: 2px; }
-        .project-info p { color: #fff; margin: 5px 0 0; font-size: 0.9rem; opacity: 0.8; }
+        .project-info h3 { color: #ffffff !important; margin: 0; }
+        .project-info p { color: rgba(255,255,255,0.7) !important; }
 
         /* --- 客戶服務與表單 --- */
         .tabs { display: flex; border-bottom: 1px solid rgba(255,255,255,0.2); margin-bottom: 30px; }
-        .tab-btn { padding: 15px 25px; color: rgba(255,255,255,0.5); background: none; border: none; cursor: pointer; }
-        .tab-btn.active { color: var(--gold); border-bottom: 2px solid var(--gold); }
-        .tab-content { display: none; padding: 20px 0; line-height: 1.8; animation: fadeIn 0.8s; }
+        .tab-btn { padding: 15px 25px; color: rgba(255,255,255,0.5) !important; background: none; border: none; cursor: pointer; }
+        .tab-btn.active { color: var(--gold) !important; border-bottom: 2px solid var(--gold); font-weight: bold; }
+        .tab-content { display: none; padding: 20px 0; color: #ffffff !important; line-height: 1.8; animation: fadeIn 0.8s; }
         .tab-content.active { display: block; }
 
-        .form-group { margin-bottom: 20px; }
-        .form-group label { display: block; margin-bottom: 8px; color: var(--gold); font-size: 0.9rem; }
+        .form-group label { display: block; margin-bottom: 10px; color: var(--gold) !important; font-size: 0.9rem; }
         .form-group input, .form-group textarea, .form-group select { 
-            width: 100%; padding: 12px; border: 1px solid rgba(255,255,255,0.2); 
-            border-radius: 4px; background: rgba(0,0,0,0.2); color: #fff; outline: none;
+            width: 100%; padding: 15px; border: 1px solid rgba(255,255,255,0.2); 
+            border-radius: 4px; background: rgba(0,0,0,0.3); color: #ffffff !important; outline: none;
         }
 
         .submit-btn { 
-            width: 100%; padding: 18px; background: var(--gold); color: #fff; border: none; 
-            font-weight: bold; cursor: pointer; letter-spacing: 3px; transition: 0.3s;
+            width: 100%; padding: 20px; background: var(--gold); color: #ffffff !important; border: none; 
+            font-weight: bold; cursor: pointer; letter-spacing: 5px; 
         }
-        .submit-btn:hover { background: #ad8a4a; }
 
-        footer { text-align: center; padding: 60px 5%; font-size: 0.8rem; opacity: 0.6; }
-
+        footer { text-align: center; padding: 60px 5%; font-size: 0.8rem; color: #777 !important; }
         @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
     </style>
 </head>
@@ -143,9 +143,11 @@
 
 <nav>
     <div class="logo-container">
-        <div class="logo-main">哲邦建設</div>
+        <div class="logo-main">
+            <span>哲</span><span>邦</span><span>建</span><span>設</span>
+        </div>
         <div class="logo-sub">
-            <span>Z</span><span>H</span><span>E</span><span>&nbsp;</span><span>B</span><span>A</span><span>N</span><span>G</span><span>&nbsp;</span><span>C</span><span>O</span><span>N</span><span>S</span><span>T</span><span>R</span><span>U</span><span>C</span><span>T</span><span>I</span><span>O</span><span>N</span>
+            <span>C</span><span>O</span><span>N</span><span>S</span><span>T</span><span>R</span><span>U</span><span>C</span><span>T</span><span>I</span><span>O</span><span>N</span>
         </div>
     </div>
     <div class="nav-links">
@@ -158,20 +160,20 @@
     <div class="content-card">
         <div class="section-header"><h2>經典學</h2></div>
         <div class="project-grid">
-            <a href="zhebang.html" style="text-decoration:none;">
-                <div class="project-item">
+            <a href="zhebang.html">
+                <div class="project-item js-preview">
                     <img src="12345.png" alt="哲邦">
                     <div class="project-info"><h3>哲邦</h3><p>核心軸帶 | 經典地標</p></div>
                 </div>
             </a>
-            <a href="chengguo.html" style="text-decoration:none;">
-                <div class="project-item">
+            <a href="chengguo.html">
+                <div class="project-item js-preview">
                     <img src="1234.jpg" alt="誠果禾樂">
                     <div class="project-info"><h3>誠果禾樂</h3><p>自然共生 | 壯闊景觀</p></div>
                 </div>
             </a>
-            <a href="xinban.html" style="text-decoration:none;">
-                <div class="project-item">
+            <a href="xinban.html">
+                <div class="project-item js-preview">
                     <img src="123.jpg" alt="新板樂睦">
                     <div class="project-info"><h3>新板樂睦</h3><p>板橋核心 | 科技住宅</p></div>
                 </div>
@@ -187,8 +189,8 @@
             <button class="tab-btn active" onclick="showTab(event, 's1')">售後維護</button>
             <button class="tab-btn" onclick="showTab(event, 's2')">客製客變</button>
         </div>
-        <div id="s1" class="tab-content active">專屬團隊提供 24 小時報修機制，守護您的家。</div>
-        <div id="s2" class="tab-content">專業客變諮詢，協助規劃最貼合生活的居家動線。</div>
+        <div id="s1" class="tab-content active">專屬團隊提供 24 小時報修機制。</div>
+        <div id="s2" class="tab-content">專業設計諮詢，打造貼合生活的動線美學。</div>
     </div>
 </section>
 
@@ -206,14 +208,6 @@
                     <input type="tel" name="phone" required>
                 </div>
                 <div class="form-group">
-                    <label>諮詢類型 TYPE</label>
-                    <select name="type">
-                        <option value="建案諮詢">預售屋 / 建案諮詢</option>
-                        <option value="售後服務">售後報修服務</option>
-                        <option value="土地開發">土地合建洽談</option>
-                    </select>
-                </div>
-                <div class="form-group">
                     <label>需求訊息 MESSAGE</label>
                     <textarea name="message" rows="4" required></textarea>
                 </div>
@@ -228,11 +222,22 @@
 </footer>
 
 <script>
+    const isMobile = window.matchMedia("(max-width: 1024px)").matches;
+    if (isMobile) {
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('is-active');
+                } else {
+                    entry.target.classList.remove('is-active');
+                }
+            });
+        }, { threshold: 0.7 });
+        document.querySelectorAll('.js-preview').forEach(target => observer.observe(target));
+    }
     function showTab(evt, tabId) {
-        let contents = document.getElementsByClassName("tab-content");
-        for (let i = 0; i < contents.length; i++) contents[i].classList.remove("active");
-        let btns = document.getElementsByClassName("tab-btn");
-        for (let i = 0; i < btns.length; i++) btns[i].classList.remove("active");
+        document.querySelectorAll(".tab-content").forEach(c => c.classList.remove("active"));
+        document.querySelectorAll(".tab-btn").forEach(b => b.classList.remove("active"));
         document.getElementById(tabId).classList.add("active");
         evt.currentTarget.classList.add("active");
     }
