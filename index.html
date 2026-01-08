@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>哲邦建設 | 構築極致建築美學</title>
+    <style>
+        * { box-sizing: border-box; }
+
+        :root {
+            --primary: #1a2a3a;
+            --gold: #c5a059;
+            --glass-bg: rgba(26, 42, 58, 0.65);
+            --line-color: rgba(255, 255, 255, 0.15);
+        }
+
+        body { 
+            font-family: "PingFang TC", "Microsoft JhengHei", sans-serif; 
+            margin: 0; 
+            color: #fff; 
+            scroll-behavior: smooth;
+            background-color: #000;
+            overflow-x: hidden;
+        }
+
+        /* --- 背景動態區 --- */
+        .bg-motion-container {
+            position: fixed;
+            top: 0; left: 0; 
+            width: 120%; 
+            height: 100%;
+            z-index: -2;
+            background-image: url('https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?q=80&w=2070&auto=format&fit=crop');
+            background-size: cover;
+            background-position: center;
+            animation: backgroundPan 90s linear infinite alternate;
+        }
+
+        .bg-edge-glow {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            z-index: -1;
+            background: inherit;
+            -webkit-mask-image: radial-gradient(circle, rgba(0,0,0,0) 40%, rgba(0,0,0,1) 100%);
+            mask-image: radial-gradient(circle, rgba(0,0,0,0) 40%, rgba(0,0,0,1) 100%);
+            animation: edgePulse 10s ease-in-out infinite alternate;
+            pointer-events: none;
+        }
+
+        @keyframes backgroundPan {
+            from { transform: translateX(0); }
+            to { transform: translateX(-10%); }
+        }
+
+        @keyframes edgePulse {
+            0% { filter: brightness(0.3) contrast(1.2); opacity: 0.5; }
+            100% { filter: brightness(0.8) contrast(1.5); opacity: 1; }
+        }
+
+        /* --- 導覽列 --- */
+        nav { 
+            background: rgba(0, 0, 0, 0.85);
+            padding: 20px 5%; 
+            display: flex; 
+            justify-content: space-between; 
+            align-items: center; 
+            position: fixed; 
+            width: 100%; top: 0; z-index: 1000; 
+            border-bottom: 1px solid var(--line-color);
+            backdrop-filter: blur(10px);
+        }
+        .logo { font-size: 1.4rem; font-weight: bold; color: #fff; letter-spacing: 3px; }
+        .nav-links a { text-decoration: none; color: #fff; margin-left: 25px; font-weight: 500; transition: 0.3s; opacity: 0.8; }
+        .nav-links a:hover { color: var(--gold); opacity: 1; }
+
+        section { padding: 140px 10% 80px; width: 100%; }
+
+        .content-card {
+            background: var(--glass-bg);
+            padding: 60px;
+            border-radius: 15px;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.5);
+            backdrop-filter: blur(20px); 
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .section-header { text-align: left; margin-bottom: 50px; border-left: 2px solid var(--gold); padding-left: 20px; }
+        .section-header h2 { font-size: 2.2rem; color: var(--gold); margin: 0; letter-spacing: 6px; }
+        .section-header p { font-size: 0.9rem; margin-top: 8px; color: rgba(255,255,255,0.6); letter-spacing: 4px; }
+
+        /* --- 案例介紹：立即回位優化 --- */
+        .project-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 35px; }
+        
+        .project-item { 
+            position: relative; 
+            cursor: pointer; 
+            border-radius: 10px; 
+            overflow: hidden; 
+            height: 480px; 
+            box-shadow: 0 10px 20px rgba(0,0,0,0.3); 
+            border: 1px solid rgba(255,255,255,0.1);
+            background: #000;
+        }
+
+        /* 預設圖片狀態：沒有 transition，移開滑鼠時會立即回位 */
+        .project-item img { 
+            width: 100%; 
+            height: 180%; 
+            object-fit: cover; 
+            opacity: 0.6; 
+            position: absolute;
+            bottom: 0; 
+            left: 0;
+            transform: translateY(0);
+        }
+
+        /* 當滑鼠移入時才加入 6秒慢慢滑動的 transition */
+        .project-item:hover img { 
+            opacity: 1; 
+            transform: translateY(40%); 
+            transition: transform 6s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.5s;
+        }
+
+        .project-item:hover { border-color: var(--gold); }
+
+        .project-info { 
+            position: absolute; bottom: 0; width: 100%; 
+            background: linear-gradient(transparent, rgba(0,0,0,0.95)); 
+            color: #fff; padding: 30px; 
+            z-index: 2;
+        }
+
+        /* --- 其他區塊 --- */
+        .tabs { display: flex; border-bottom: 1px solid rgba(255,255,255,0.2); margin-bottom: 30px; }
+        .tab-btn { padding: 15px 35px; border: none; background: none; cursor: pointer; font-size: 1.1rem; color: rgba(255,255,255,0.5); }
+        .tab-btn.active { color: var(--gold); border-bottom: 3px solid var(--gold); font-weight: bold; }
+        .tab-content { display: none; padding: 20px 0; line-height: 2; font-size: 1.1rem; animation: fadeIn 0.8s; }
+        .tab-content.active { display: block; }
+
+        .contact-container { max-width: 600px; }
+        .form-group { margin-bottom: 22px; }
+        .form-group label { display: block; margin-bottom: 10px; font-weight: bold; color: var(--gold); font-size: 0.9rem; }
+        .form-group input, .form-group textarea, .form-group select { 
+            width: 100%; padding: 15px; border: 1px solid rgba(255,255,255,0.2); 
+            border-radius: 4px; font-size: 1rem; background: rgba(0,0,0,0.2); color: #fff; outline: none;
+        }
+        .form-group select option { background: #1a2a3a; }
+
+        .submit-btn { 
+            width: 100%; padding: 20px; background: var(--gold); color: #fff; border: none; border-radius: 4px; 
+            font-size: 1.1rem; font-weight: bold; cursor: pointer; transition: 0.4s;
+            letter-spacing: 5px; margin-top: 10px;
+        }
+        .submit-btn:hover { background: #ad8a4a; }
+
+        footer { text-align: center; padding: 80px 10%; background: rgba(0,0,0,0.9); color: #777; border-top: 1px solid var(--line-color); letter-spacing: 2px; }
+
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+    </style>
+</head>
+<body>
+
+<div class="bg-motion-container"></div>
+<div class="bg-edge-glow" style="background-image: url('https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?q=80&w=2070&auto=format&fit=crop'); background-size: cover; background-position: center;"></div>
+
+<nav>
+    <div class="logo">哲邦建設 ZHE BANG</div>
+    <div class="nav-links">
+        <a href="#projects">案例介紹</a>
+        <a href="#services">客戶服務</a>
+        <a href="#contact">聯絡我們</a>
+    </div>
+</nav>
+
+<section id="projects">
+    <div class="content-card">
+        <div class="section-header">
+            <h2>經典學</h2>
+            <p>CLASSIC ARCHITECTURE</p>
+        </div>
+        <div class="project-grid">
+            <a href="zhebang.html" style="text-decoration:none;">
+                <div class="project-item">
+                    <img src="12345.png" alt="哲邦">
+                    <div class="project-info"><h3>哲邦</h3><p>核心軸帶 | 經典地標</p></div>
+                </div>
+            </a>
+            <a href="chengguo.html" style="text-decoration:none;">
+                <div class="project-item">
+                    <img src="1234.jpg" alt="誠果禾樂">
+                    <div class="project-info"><h3>誠果禾樂</h3><p>自然共生 | 壯闊景觀</p></div>
+                </div>
+            </a>
+            <a href="xinban.html" style="text-decoration:none;">
+                <div class="project-item">
+                    <img src="123.jpg" alt="新板樂睦">
+                    <div class="project-info"><h3>新板樂睦</h3><p>板橋核心 | 科技住宅</p></div>
+                </div>
+            </a>
+        </div>
+    </div>
+</section>
+
+<section id="services">
+    <div class="content-card">
+        <div class="section-header">
+            <h2>進行室</h2>
+            <p>ADVANCE SERVICE</p>
+        </div>
+        <div class="service-tabs">
+            <div class="tabs">
+                <button class="tab-btn active" onclick="showTab(event, 's1')">售後維護</button>
+                <button class="tab-btn" onclick="showTab(event, 's2')">客製客變</button>
+                <button class="tab-btn" onclick="showTab(event, 's3')">品質保固</button>
+            </div>
+            <div id="s1" class="tab-content active">
+                <p>我們提供 24 小時快速報修機制，由哲邦專屬工班團隊直接服務。</p>
+            </div>
+            <div id="s2" class="tab-content">
+                <p>專業客變諮詢，協助您在結構安全範圍內調整居家動線。</p>
+            </div>
+            <div id="s3" class="tab-content">
+                <p>結構保固 15 年、防水 3 年。打造養身與養心兼具的住宅。</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section id="contact">
+    <div class="content-card">
+        <div class="section-header">
+            <h2>鑄未來</h2>
+            <p>FUTURE COMMITMENT</p>
+        </div>
+        <div class="contact-container">
+            <form action="https://formspree.io/f/your-id" method="POST">
+                <div class="form-group">
+                    <label>您的姓名 NAME</label>
+                    <input type="text" name="name" required>
+                </div>
+                <div class="form-group">
+                    <label>聯絡電話 PHONE</label>
+                    <input type="tel" name="phone" required>
+                </div>
+                <div class="form-group">
+                    <label>諮詢類型 TYPE</label>
+                    <select name="type">
+                        <option value="建案諮詢">預售屋 / 建案諮詢</option>
+                        <option value="售後維修">售後報修服務</option>
+                        <option value="土地開發">土地合建洽談</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>需求訊息 MESSAGE</label>
+                    <textarea name="message" rows="4" required></textarea>
+                </div>
+                <button type="submit" class="submit-btn">SEND MESSAGE</button>
+            </form>
+        </div>
+    </div>
+</section>
+
+<footer>
+    <p>哲邦建設有限公司 ZHE BANG CONSTRUCTION © 2026</p>
+    <p>新北市板橋區重慶路89巷2-1號 | TEL 02-2958-2711</p>
+</footer>
+
+<script>
+    function showTab(evt, tabId) {
+        let contents = document.getElementsByClassName("tab-content");
+        for (let i = 0; i < contents.length; i++) contents[i].classList.remove("active");
+        let btns = document.getElementsByClassName("tab-btn");
+        for (let i = 0; i < btns.length; i++) btns[i].classList.remove("active");
+        document.getElementById(tabId).classList.add("active");
+        evt.currentTarget.classList.add("active");
+    }
+</script>
+
+</body>
+</html>
