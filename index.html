@@ -8,37 +8,29 @@
         * { box-sizing: border-box; }
 
         :root {
-            --primary: #1a2a3a;       /* 經典深藍色 */
-            --gold: #c5a059;          /* 質感金色 */
-            /* 調高透明度：將 alpha 從 0.75 降至 0.45 */
-            --glass-bg: rgba(26, 42, 58, 0.2); 
+            --primary: #1a2a3a;       /* 經典深藍色背景 */
+            --gold: #c5a059;          /* 金色用於裝飾線條與按鈕 */
+            --glass-bg: rgba(26, 42, 58, 0.75);
             --line-color: rgba(255, 255, 255, 0.15);
         }
 
         body { 
-            font-family: "PingFang TC", "Microsoft JhengHei", sans-serif; 
+            font-family: "Microsoft JhengHei", "PingFang TC", sans-serif; 
             margin: 0; color: #fff; background-color: #000; overflow-x: hidden;
         }
 
-        /* --- 背景動態區 --- */
+        /* --- 背景極慢流動 (90s) --- */
         .bg-motion-container {
-            position: fixed; top: 0; left: 0; width: 125%; height: 100%; z-index: -2;
+            position: fixed;
+            top: 0; left: 0; width: 120%; height: 100%; z-index: -2;
             background-image: url('https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?q=80&w=2070&auto=format&fit=crop');
             background-size: cover; background-position: center;
             animation: backgroundPan 90s linear infinite alternate;
         }
-        .bg-edge-glow {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1;
-            background: inherit;
-            -webkit-mask-image: radial-gradient(circle, rgba(0,0,0,0) 40%, rgba(0,0,0,1) 100%);
-            mask-image: radial-gradient(circle, rgba(0,0,0,0) 40%, rgba(0,0,0,1) 100%);
-            animation: edgePulse 10s ease-in-out infinite alternate;
-            pointer-events: none;
-        }
-        @keyframes backgroundPan { from { transform: translateX(0); } to { transform: translateX(-10%); } }
-        @keyframes edgePulse { 0% { filter: brightness(0.3); opacity: 0.5; } 100% { filter: brightness(0.7); opacity: 1; } }
 
-        /* --- 導覽列：Logo 藝術化 --- */
+        @keyframes backgroundPan { from { transform: translateX(0); } to { transform: translateX(-10%); } }
+
+        /* --- 導覽列與 Logo 左右對齊優化 --- */
         nav { 
             background: rgba(0, 0, 0, 0.9); padding: 15px 5%; 
             display: flex; justify-content: space-between; align-items: center; 
@@ -46,118 +38,125 @@
             border-bottom: 1px solid var(--line-color); backdrop-filter: blur(10px);
         }
 
-        .logo-container { display: flex; flex-direction: column; width: fit-content; }
-        .logo-main { 
-            font-size: 1.5rem; font-weight: bold; 
-            letter-spacing: 0.8rem; 
-            line-height: 1.2; text-align: justify;
-            margin-right: -0.8rem; 
-        }
-        .logo-sub { 
-            font-size: 0.65rem; color: var(--gold); opacity: 0.9;
-            font-family: "Georgia", serif; 
-            letter-spacing: 0.05rem;
-            text-align: justify;
-            text-align-last: justify; 
-            margin-top: 5px;
-            text-transform: uppercase;
+        .logo-container { 
+            display: inline-flex; 
+            flex-direction: column; 
+            width: fit-content;
         }
 
-        .nav-links a { text-decoration: none; color: #fff; margin-left: 20px; font-size: 0.95rem; opacity: 0.8; }
+        .logo-main { 
+            font-size: 1.6rem; 
+            font-weight: bold; 
+            color: #fff; 
+            letter-spacing: 0.5rem; /* 調整中文字間距以增加寬度 */
+            line-height: 1.1;
+            text-align: justify;
+            text-justify: inter-character;
+            margin-right: -0.5rem; /* 抵銷最後一個字的字間距 */
+        }
+
+        .logo-sub { 
+            font-family: "Microsoft JhengHei", sans-serif; 
+            font-size: 0.55rem; 
+            color: #fff; 
+            opacity: 0.9; 
+            margin-top: 3px;
+            font-weight: normal;
+            display: flex;
+            justify-content: space-between; /* 關鍵：讓英文字母自動撐滿寬度以對齊中文 */
+            width: 100%;
+            text-align: center;
+            letter-spacing: 0px;
+        }
+
+        .nav-links a { text-decoration: none; color: #fff; margin-left: 20px; font-size: 0.9rem; }
 
         /* --- 內容區域 --- */
-        section { padding: 80px 10%; } 
-        
-        #projects { margin-top: 15vh; } 
-
+        section { padding: 130px 8% 60px; }
         .content-card {
-            background: var(--glass-bg); padding: 60px; border-radius: 15px;
-            /* 增強模糊效果配合高透明度 */
-            backdrop-filter: blur(25px); 
-            border: 1px solid rgba(255,255,255,0.1);
+            background: var(--glass-bg); padding: 40px; border-radius: 15px;
+            backdrop-filter: blur(20px); border: 1px solid rgba(255,255,255,0.1);
         }
 
-        .section-header { border-left: 2px solid var(--gold); padding-left: 20px; margin-bottom: 50px; }
-        .section-header h2 { font-size: 2.2rem; color: var(--gold); margin: 0; letter-spacing: 6px; }
+        .section-header { border-left: 2px solid var(--gold); padding-left: 15px; margin-bottom: 40px; }
+        .section-header h2 { font-size: 1.8rem; color: var(--gold); margin: 0; letter-spacing: 4px; }
 
-        /* --- 案例介紹 --- */
-        .project-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 35px; }
+        /* --- 案例介紹：立即歸位邏輯 --- */
+        .project-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 30px; }
+        
         .project-item { 
-            position: relative; border-radius: 10px; overflow: hidden; height: 480px; 
-            background: #000; border: 1px solid rgba(255,255,255,0.1);
+            position: relative; border-radius: 10px; overflow: hidden; height: 450px; 
+            background: #000; border: 1px solid rgba(255,255,255,0.1); cursor: pointer;
         }
+
         .project-item img { 
-            width: 100%; height: 180%; object-fit: cover; position: absolute; bottom: 0; left: 0; opacity: 0.6;
+            width: 100%; height: 180%; object-fit: cover; 
+            position: absolute; bottom: 0; left: 0; opacity: 0.6;
+            transform: translateY(0);
         }
 
-        @media (min-width: 1025px) {
-            .project-item:hover img { 
-                opacity: 1; transform: translateY(40%); 
-                transition: transform 6s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.5s;
-            }
+        /* 移入慢滑，移出立即跳回 */
+        .project-item:hover img, 
+        .project-item:active img { 
+            opacity: 1; 
+            transform: translateY(40%); 
+            transition: transform 6s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.5s;
         }
 
-        @media (max-width: 1024px) {
-            #projects { margin-top: 12vh; }
-            section { padding: 60px 5%; }
-            .content-card { padding: 30px; }
-            .project-item img { opacity: 0.9; animation: mobileAutoPreview 12s ease-in-out infinite alternate; }
-        }
-        @keyframes mobileAutoPreview { 0% { transform: translateY(0); } 100% { transform: translateY(35%); } }
+        .project-item img { transition: none; }
 
         .project-info { 
             position: absolute; bottom: 0; width: 100%; 
-            background: linear-gradient(transparent, rgba(0,0,0,0.95)); 
-            padding: 30px; z-index: 2; 
+            background: linear-gradient(transparent, rgba(0,0,0,0.95)); padding: 25px; z-index: 2;
         }
-        .project-info h3 { color: #ffffff !important; margin: 0; font-size: 1.4rem; }
-        .project-info p { color: rgba(255, 255, 255, 0.8) !important; margin-top: 5px; }
+        .project-info h3 { color: #fff; margin: 0; font-size: 1.3rem; letter-spacing: 2px; }
+        .project-info p { color: #fff; margin: 5px 0 0; font-size: 0.9rem; opacity: 0.8; }
 
-        /* --- 其他區塊 --- */
+        /* --- 客戶服務與表單 --- */
         .tabs { display: flex; border-bottom: 1px solid rgba(255,255,255,0.2); margin-bottom: 30px; }
-        .tab-btn { padding: 15px 30px; color: rgba(255,255,255,0.5); background: none; border: none; cursor: pointer; }
+        .tab-btn { padding: 15px 25px; color: rgba(255,255,255,0.5); background: none; border: none; cursor: pointer; }
         .tab-btn.active { color: var(--gold); border-bottom: 2px solid var(--gold); }
-        .tab-content { display: none; padding: 20px 0; line-height: 2; }
+        .tab-content { display: none; padding: 20px 0; line-height: 1.8; animation: fadeIn 0.8s; }
         .tab-content.active { display: block; }
 
-        .contact-container { max-width: 600px; margin-top: 30px; }
         .form-group { margin-bottom: 20px; }
-        .form-group label { display: block; margin-bottom: 10px; color: var(--gold); font-size: 0.9rem; font-weight: bold; }
+        .form-group label { display: block; margin-bottom: 8px; color: var(--gold); font-size: 0.9rem; }
         .form-group input, .form-group textarea, .form-group select { 
-            width: 100%; padding: 15px; border: 1px solid rgba(255,255,255,0.2); 
-            background: rgba(0,0,0,0.2); color: #fff; border-radius: 4px; outline: none;
+            width: 100%; padding: 12px; border: 1px solid rgba(255,255,255,0.2); 
+            border-radius: 4px; background: rgba(0,0,0,0.2); color: #fff; outline: none;
         }
+
         .submit-btn { 
-            width: 100%; padding: 20px; background: var(--gold); color: #fff; border: none; 
-            letter-spacing: 5px; font-weight: bold; cursor: pointer; transition: 0.4s;
+            width: 100%; padding: 18px; background: var(--gold); color: #fff; border: none; 
+            font-weight: bold; cursor: pointer; letter-spacing: 3px; transition: 0.3s;
         }
         .submit-btn:hover { background: #ad8a4a; }
 
-        footer { text-align: center; padding: 80px 10%; background: rgba(0,0,0,0.9); color: #777; border-top: 1px solid var(--line-color); }
+        footer { text-align: center; padding: 60px 5%; font-size: 0.8rem; opacity: 0.6; }
+
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
     </style>
 </head>
 <body>
 
 <div class="bg-motion-container"></div>
-<div class="bg-edge-glow" style="background-image: url('https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?q=80&w=2070&auto=format&fit=crop'); background-size: cover; background-position: center;"></div>
 
 <nav>
     <div class="logo-container">
         <div class="logo-main">哲邦建設</div>
-        <div class="logo-sub">ZHE BANG CONSTRUCTION</div>
+        <div class="logo-sub">
+            <span>Z</span><span>H</span><span>E</span><span>&nbsp;</span><span>B</span><span>A</span><span>N</span><span>G</span><span>&nbsp;</span><span>C</span><span>O</span><span>N</span><span>S</span><span>T</span><span>R</span><span>U</span><span>C</span><span>T</span><span>I</span><span>O</span><span>N</span>
+        </div>
     </div>
     <div class="nav-links">
         <a href="#projects">案例介紹</a>
-        <a href="#services">客戶服務</a>
         <a href="#contact">聯絡我們</a>
     </div>
 </nav>
 
 <section id="projects">
     <div class="content-card">
-        <div class="section-header">
-            <h2>經典學</h2>
-        </div>
+        <div class="section-header"><h2>經典學</h2></div>
         <div class="project-grid">
             <a href="zhebang.html" style="text-decoration:none;">
                 <div class="project-item">
@@ -188,12 +187,8 @@
             <button class="tab-btn active" onclick="showTab(event, 's1')">售後維護</button>
             <button class="tab-btn" onclick="showTab(event, 's2')">客製客變</button>
         </div>
-        <div id="s1" class="tab-content active">
-            <p>我們提供 24 小時快速報修機制，由哲邦專屬工班團隊直接服務。</p>
-        </div>
-        <div id="s2" class="tab-content">
-            <p>專業客變諮詢，協助您在結構安全範圍內調整居家動線。</p>
-        </div>
+        <div id="s1" class="tab-content active">專屬團隊提供 24 小時報修機制，守護您的家。</div>
+        <div id="s2" class="tab-content">專業客變諮詢，協助規劃最貼合生活的居家動線。</div>
     </div>
 </section>
 
@@ -201,26 +196,26 @@
     <div class="content-card">
         <div class="section-header"><h2>鑄未來</h2></div>
         <div class="contact-container">
-            <form>
+            <form action="https://formspree.io/f/your-id" method="POST">
                 <div class="form-group">
                     <label>您的姓名 NAME</label>
-                    <input type="text" placeholder="請輸入姓名">
+                    <input type="text" name="name" required>
                 </div>
                 <div class="form-group">
                     <label>聯絡電話 PHONE</label>
-                    <input type="tel" placeholder="請輸入電話">
+                    <input type="tel" name="phone" required>
                 </div>
                 <div class="form-group">
                     <label>諮詢類型 TYPE</label>
-                    <select>
-                        <option>預售屋 / 建案諮詢</option>
-                        <option>售後維修服務</option>
-                        <option>土地合建洽談</option>
+                    <select name="type">
+                        <option value="建案諮詢">預售屋 / 建案諮詢</option>
+                        <option value="售後服務">售後報修服務</option>
+                        <option value="土地開發">土地合建洽談</option>
                     </select>
                 </div>
                 <div class="form-group">
                     <label>需求訊息 MESSAGE</label>
-                    <textarea rows="4" placeholder="請輸入內容"></textarea>
+                    <textarea name="message" rows="4" required></textarea>
                 </div>
                 <button type="submit" class="submit-btn">SEND MESSAGE</button>
             </form>
@@ -229,8 +224,7 @@
 </section>
 
 <footer>
-    <p>哲邦建設有限公司 ZHE BANG CONSTRUCTION © 2026</p>
-    <p>新北市板橋區重慶路89巷2-1號 | TEL 02-2958-2711</p>
+    <p>哲邦建設有限公司 © 2026<br>新北市板橋區重慶路89巷2-1號 | 02-2958-2711</p>
 </footer>
 
 <script>
