@@ -1,247 +1,224 @@
 <!DOCTYPE html>
-<html lang="zh-Hant">
+<html class="dark" lang="zh-TW">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>哲邦建設 | 構築極致建築美學</title>
-    <style>
-        * { box-sizing: border-box; }
-
-        :root {
-            --primary: #1a2a3a;
-            --gold: #c5a059;
-            --glass-bg: rgba(26, 42, 58, 0.75);
-            --line-color: rgba(255, 255, 255, 0.15);
-        }
-
-        body { 
-            font-family: "Microsoft JhengHei", "PingFang TC", sans-serif; 
-            margin: 0; 
-            color: #ffffff !important; 
-            background-color: #000; 
-            overflow-x: hidden;
-        }
-
-        /* 移除所有連結預設顏色，防止變藍 */
-        a { color: inherit !important; text-decoration: none !important; }
-
-        /* --- 背景動態 --- */
-        .bg-motion-container {
-            position: fixed;
-            top: 0; left: 0; width: 120%; height: 100%; z-index: -2;
-            background-image: url('https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?q=80&w=2070&auto=format&fit=crop');
-            background-size: cover; background-position: center;
-            animation: backgroundPan 90s linear infinite alternate;
-        }
-        @keyframes backgroundPan { from { transform: translateX(0); } to { transform: translateX(-10%); } }
-
-        /* --- 導覽列與標題 (標題模式統一 & 顏色鎖定) --- */
-        nav { 
-            background: rgba(0, 0, 0, 0.9); padding: 15px 5%; 
-            display: flex; justify-content: space-between; align-items: center; 
-            position: fixed; width: 100%; top: 0; z-index: 1000; 
-            border-bottom: 1px solid var(--line-color); backdrop-filter: blur(10px);
-        }
-
-        .logo-container { 
-            display: flex; flex-direction: column; 
-            width: 140px; 
-        }
-        .logo-main { 
-            font-size: 1.4rem; font-weight: bold; 
-            color: #ffffff !important; 
-            display: flex; justify-content: space-between; 
-            margin-bottom: 4px;
-        }
-        .logo-sub { 
-            font-family: "Microsoft JhengHei", sans-serif; 
-            font-size: 0.55rem; font-weight: bold; font-style: normal; 
-            color: var(--gold) !important; 
-            border-top: 1px solid rgba(197, 160, 89, 0.4);
-            padding-top: 3px;
-            display: flex; justify-content: space-between; 
-        }
-
-        .nav-links a { margin-left: 20px; font-size: 0.9rem; opacity: 0.8; }
-        .nav-links a:hover { color: var(--gold) !important; opacity: 1; }
-
-        /* --- 內容區域 --- */
-        section { padding: 130px 8% 60px; }
-        .content-card {
-            background: var(--glass-bg); padding: 40px; border-radius: 15px;
-            backdrop-filter: blur(20px); border: 1px solid rgba(255,255,255,0.1);
-        }
-        .section-header { border-left: 2px solid var(--gold); padding-left: 15px; margin-bottom: 40px; }
-        .section-header h2 { font-size: 1.8rem; color: var(--gold) !important; margin: 0; letter-spacing: 4px; }
-
-        /* --- 案例介紹動態 --- */
-        .project-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 30px; }
-        .project-item { 
-            position: relative; border-radius: 10px; overflow: hidden; height: 450px; 
-            background: #000; border: 1px solid rgba(255,255,255,0.1); cursor: pointer;
-        }
-        
-        .project-item img { 
-            width: 100%; height: 180%; object-fit: cover; 
-            position: absolute; bottom: 0; left: 0; opacity: 0.6;
-            transform: translateY(0); transition: none; 
-        }
-
-        /* 電腦版觸發 */
-        @media (min-width: 1025px) {
-            .project-item:hover img { 
-                opacity: 1; 
-                transform: translateY(40%); 
-                transition: transform 6s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.5s; 
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>哲邦建設 | Zhe Bang Construction</title>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,typography"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@400;700&family=Noto+Sans+TC:wght@300;400;500&family=Playfair+Display:ital,wght@0,400;1,400&family=Material+Symbols+Outlined&display=swap" rel="stylesheet"/>
+    <script>
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: { primary: "#C5A059", bg: "#050608", glass: "rgba(255, 255, 255, 0.02)" },
+                    fontFamily: { display: ["Noto Serif TC", "serif"], sans: ["Noto Sans TC", "sans-serif"], serif: ["Playfair Display", "serif"] },
+                },
+            },
+        };
+    </script>
+    <style type="text/tailwindcss">
+        @layer utilities {
+            .glass-panel { @apply bg-black/40 backdrop-blur-xl border border-white/5; }
+            .input-minimal { @apply w-full bg-transparent border-l border-primary/30 border-y-0 border-r-0 px-4 py-3 text-white focus:ring-0 focus:bg-white/5 outline-none transition-all placeholder:text-slate-600 text-sm; }
+            .section-title { @apply text-[10px] tracking-[0.4em] text-primary/70 uppercase font-medium mb-2 block text-center; }
+            .nav-link { @apply hover:text-primary transition-colors duration-300; }
+            
+            /* 背景動態 */
+            .bg-parallax {
+                position: fixed; inset: -10% -10%; z-index: -10; opacity: 0.15;
+                background: url('https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?q=80&w=2070') center/cover;
+                animation: pan 90s linear infinite alternate;
             }
-        }
-
-        /* 手機版觸發 */
-        @media (max-width: 1024px) {
-            .project-item.is-active img { 
-                opacity: 1; 
-                transform: translateY(40%); 
-                transition: transform 6s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.5s; 
+            @keyframes pan { to { transform: translateX(-5%); } }
+            
+            .img-scan { width: 100%; height: 180%; object-fit: cover; transition: transform 6s cubic-bezier(0.25, 1, 0.5, 1); }
+            
+            /* 電腦版 (md以上)：只有滑鼠游標過去(Hover)才會動 */
+            @media (min-width: 768px) {
+                .group:hover .img-scan { transform: translateY(-30%); }
             }
-            .logo-container { width: 120px; }
-            .logo-main { font-size: 1.2rem; }
-            .logo-sub { font-size: 0.45rem; }
+            
+            /* 手機版 (md以下)：滾動偵測自動動 */
+            @media (max-width: 767px) {
+                .is-active .img-scan { transform: translateY(-30%); }
+            }
+            
+            /* 去背圖的黑暗氛圍遮罩 */
+            .overlay-gradient { background: linear-gradient(0deg, #050608 0%, rgba(5,6,8,0.5) 50%, rgba(5,6,8,0.1) 100%); }
         }
-
-        .project-info { 
-            position: absolute; bottom: 0; width: 100%; 
-            background: linear-gradient(transparent, rgba(0,0,0,0.95)); padding: 25px; z-index: 2;
-        }
-        .project-info h3 { color: #ffffff !important; margin: 0; }
-        .project-info p { color: rgba(255,255,255,0.7) !important; }
-
-        /* --- 客戶服務與表單 --- */
-        .tabs { display: flex; border-bottom: 1px solid rgba(255,255,255,0.2); margin-bottom: 30px; }
-        .tab-btn { padding: 15px 25px; color: rgba(255,255,255,0.5) !important; background: none; border: none; cursor: pointer; }
-        .tab-btn.active { color: var(--gold) !important; border-bottom: 2px solid var(--gold); font-weight: bold; }
-        .tab-content { display: none; padding: 20px 0; color: #ffffff !important; line-height: 1.8; animation: fadeIn 0.8s; }
-        .tab-content.active { display: block; }
-
-        .form-group label { display: block; margin-bottom: 10px; color: var(--gold) !important; font-size: 0.9rem; }
-        .form-group input, .form-group textarea, .form-group select { 
-            width: 100%; padding: 15px; border: 1px solid rgba(255,255,255,0.2); 
-            border-radius: 4px; background: rgba(0,0,0,0.3); color: #ffffff !important; outline: none;
-        }
-
-        .submit-btn { 
-            width: 100%; padding: 20px; background: var(--gold); color: #ffffff !important; border: none; 
-            font-weight: bold; cursor: pointer; letter-spacing: 5px; 
-        }
-
-        footer { text-align: center; padding: 60px 5%; font-size: 0.8rem; color: #777 !important; }
-        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
     </style>
 </head>
-<body>
+<body class="bg-bg font-sans text-slate-200 antialiased selection:bg-primary/30">
 
-<div class="bg-motion-container"></div>
+    <div class="bg-parallax"></div>
 
-<nav>
-    <div class="logo-container">
-        <div class="logo-main">
-            <span>哲</span><span>邦</span><span>建</span><span>設</span>
+    <header class="fixed top-0 w-full z-50 px-6 py-5 md:px-12 flex justify-between items-center glass-panel border-b-0 border-white/5 bg-bg/80">
+        
+        <div class="flex flex-col items-start w-fit">
+            <h1 class="font-display text-xl md:text-2xl tracking-[0.25em] font-bold text-white leading-none whitespace-nowrap">哲邦建設</h1>
+            <span class="w-full text-justify text-[9px] md:text-[10px] tracking-[0.6em] text-primary/80 uppercase font-serif font-bold mt-1 block">ZHEBANG</span>
         </div>
-        <div class="logo-sub">
-            <span>C</span><span>O</span><span>N</span><span>S</span><span>T</span><span>R</span><span>U</span><span>C</span><span>T</span><span>I</span><span>O</span><span>N</span>
-        </div>
-    </div>
-    <div class="nav-links">
-        <a href="#projects">案例介紹</a>
-        <a href="#contact">聯絡我們</a>
-    </div>
-</nav>
 
-<section id="projects">
-    <div class="content-card">
-        <div class="section-header"><h2>經典學</h2></div>
-        <div class="project-grid">
-            <a href="zhebang.html">
-                <div class="project-item js-preview">
-                    <img src="12345.png" alt="哲邦">
-                    <div class="project-info"><h3>哲邦</h3><p>核心軸帶 | 經典地標</p></div>
-                </div>
-            </a>
-            <a href="chengguo.html">
-                <div class="project-item js-preview">
-                    <img src="1234.jpg" alt="誠果禾樂">
-                    <div class="project-info"><h3>誠果禾樂</h3><p>自然共生 | 壯闊景觀</p></div>
-                </div>
-            </a>
-            <a href="xinban.html">
-                <div class="project-item js-preview">
-                    <img src="123.jpg" alt="新板樂睦">
-                    <div class="project-info"><h3>新板樂睦</h3><p>板橋核心 | 科技住宅</p></div>
-                </div>
-            </a>
-        </div>
-    </div>
-</section>
+        <nav class="hidden md:flex gap-12 text-[10px] tracking-[0.3em] font-bold uppercase text-slate-400">
+            <a href="#masterpiece" class="nav-link">進行室</a>
+            <a href="#projects" class="nav-link">經典學</a>
+            <a href="#contact" class="nav-link">鑄未來</a>
+        </nav>
+        <button class="md:hidden text-primary"><span class="material-symbols-outlined">menu</span></button>
+    </header>
 
-<section id="services">
-    <div class="content-card">
-        <div class="section-header"><h2>進行室</h2></div>
-        <div class="tabs">
-            <button class="tab-btn active" onclick="showTab(event, 's1')">售後維護</button>
-            <button class="tab-btn" onclick="showTab(event, 's2')">客製客變</button>
-        </div>
-        <div id="s1" class="tab-content active">專屬團隊提供 24 小時報修機制。</div>
-        <div id="s2" class="tab-content">專業設計諮詢，打造貼合生活的動線美學。</div>
-    </div>
-</section>
+    <main class="pt-32 pb-40 px-6 md:px-12 max-w-7xl mx-auto space-y-40">
 
-<section id="contact">
-    <div class="content-card">
-        <div class="section-header"><h2>鑄未來</h2></div>
-        <div class="contact-container">
-            <form action="https://formspree.io/f/your-id" method="POST">
-                <div class="form-group">
-                    <label>您的姓名 NAME</label>
-                    <input type="text" name="name" required>
+        <section id="masterpiece">
+            <div class="text-center mb-10">
+                <span class="section-title">Architectural Excellence</span>
+                <h2 class="text-4xl font-display font-bold text-white tracking-widest">進行室</h2>
+                <div class="w-12 h-[1px] bg-primary/40 mx-auto mt-6"></div>
+            </div>
+
+            <div class="relative rounded-[3rem] overflow-hidden bg-[#0a0c10] border border-white/10 shadow-2xl group">
+                <div class="relative aspect-[4/5] md:aspect-[21/9] flex items-end justify-center overflow-hidden">
+                    
+                    <img src="123456.png" class="relative z-10 w-full h-[120%] object-contain object-bottom opacity-90 transition-transform duration-[2s] group-hover:scale-105" alt="哲邦 · 萬華">
+                    
+                    <div class="absolute inset-0 overlay-gradient z-20"></div>
+                    
+                    <div class="absolute z-30 bottom-10 text-center">
+                        <h3 class="text-4xl md:text-6xl font-display font-bold text-white tracking-[0.2em] mb-2">哲邦 · 萬華</h3>
+                        <p class="text-[10px] tracking-[0.4em] text-primary uppercase">The Wan Hua Collection</p>
+                    </div>
                 </div>
-                <div class="form-group">
-                    <label>聯絡電話 PHONE</label>
-                    <input type="tel" name="phone" required>
+
+                <div class="grid grid-cols-3 bg-bg/90 backdrop-blur border-t border-white/10">
+                    <div class="py-8 flex flex-col items-center border-r border-white/5">
+                        <span class="text-[9px] tracking-widest text-slate-500 uppercase mb-1">Area</span>
+                        <div class="text-2xl font-bold text-white">278 <span class="text-[10px] text-primary align-top">坪</span></div>
+                    </div>
+                    <div class="py-8 flex flex-col items-center border-r border-white/5">
+                        <span class="text-[9px] tracking-widest text-slate-500 uppercase mb-1">Floors</span>
+                        <div class="text-2xl font-bold text-white">13F</div>
+                    </div>
+                    <div class="py-8 flex flex-col items-center">
+                        <span class="text-[9px] tracking-widest text-slate-500 uppercase mb-1">Parking</span>
+                        <div class="text-2xl font-bold text-white">35</div>
+                    </div>
                 </div>
-                <div class="form-group">
-                    <label>需求訊息 MESSAGE</label>
-                    <textarea name="message" rows="4" required></textarea>
+            </div>
+
+            <div class="mt-16 rounded-[2rem] bg-[#0a0c10] border border-white/10 shadow-xl overflow-hidden p-8 md:p-12">
+                <div class="text-center mb-10">
+                    <h3 class="text-2xl font-display font-bold text-white tracking-widest">專屬服務</h3>
+                    <div class="w-8 h-[1px] bg-primary/40 mx-auto mt-4"></div>
                 </div>
-                <button type="submit" class="submit-btn">SEND MESSAGE</button>
+                <div class="grid md:grid-cols-2 gap-8">
+                    <div class="p-8 border-l border-primary/20 bg-glass hover:bg-white/5 transition-colors rounded-r-xl">
+                        <h4 class="text-primary text-[10px] font-bold tracking-[0.3em] mb-3 uppercase flex items-center gap-2">
+                            <span class="material-symbols-outlined text-sm">verified</span> 售後維護 / Service
+                        </h4>
+                        <p class="text-slate-400 text-xs font-light leading-relaxed">24小時專屬報修機制，以工匠之心守護您的居住承諾。</p>
+                    </div>
+                    <div class="p-8 border-l border-primary/20 bg-glass hover:bg-white/5 transition-colors rounded-r-xl">
+                        <h4 class="text-primary text-[10px] font-bold tracking-[0.3em] mb-3 uppercase flex items-center gap-2">
+                            <span class="material-symbols-outlined text-sm">tune</span> 客製客變 / Custom
+                        </h4>
+                        <p class="text-slate-400 text-xs font-light leading-relaxed">交屋前專業設計諮詢，打造完全貼合生活動線的私人場域。</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="projects">
+            <div class="mb-12 border-l-2 border-primary pl-6">
+                <span class="text-xs tracking-[0.3em] text-primary/70 uppercase">Selected Works</span>
+                <h2 class="text-3xl font-display font-bold text-white mt-2">經典學 <span class="font-serif italic text-primary/50 text-2xl font-light">Legacy</span></h2>
+            </div>
+
+            <div class="grid md:grid-cols-3 gap-8">
+                <article class="group relative aspect-[3/4] bg-zinc-900 rounded-2xl overflow-hidden cursor-pointer js-scroll-trigger">
+                    <div class="absolute inset-0 overflow-hidden"><img src="12345.png" class="img-scan opacity-60 group-hover:opacity-100" alt="哲邦"></div>
+                    <div class="absolute inset-0 overlay-gradient"></div>
+                    <div class="absolute bottom-0 p-8 w-full">
+                        <h3 class="text-2xl font-display font-bold text-white tracking-widest mb-2">哲邦</h3>
+                        <p class="text-[10px] text-slate-400 tracking-widest border-l border-primary/50 pl-3">核心軸帶 — 城市經典地標</p>
+                    </div>
+                </article>
+                <article class="group relative aspect-[3/4] bg-zinc-900 rounded-2xl overflow-hidden cursor-pointer js-scroll-trigger">
+                    <div class="absolute inset-0 overflow-hidden"><img src="1234.jpg" class="img-scan opacity-60 group-hover:opacity-100" alt="誠果"></div>
+                    <div class="absolute inset-0 overlay-gradient"></div>
+                    <div class="absolute bottom-0 p-8 w-full">
+                        <h3 class="text-2xl font-display font-bold text-white tracking-widest mb-2">誠果禾樂</h3>
+                        <p class="text-[10px] text-slate-400 tracking-widest border-l border-primary/50 pl-3">自然共生 — 壯闊景觀美學</p>
+                    </div>
+                </article>
+                <article class="group relative aspect-[3/4] bg-zinc-900 rounded-2xl overflow-hidden cursor-pointer js-scroll-trigger">
+                    <div class="absolute inset-0 overflow-hidden"><img src="123.jpg" class="img-scan opacity-60 group-hover:opacity-100" alt="新板"></div>
+                    <div class="absolute inset-0 overlay-gradient"></div>
+                    <div class="absolute bottom-0 p-8 w-full">
+                        <h3 class="text-2xl font-display font-bold text-white tracking-widest mb-2">新板樂睦</h3>
+                        <p class="text-[10px] text-slate-400 tracking-widest border-l border-primary/50 pl-3">板橋核心 — 智慧科技住宅</p>
+                    </div>
+                </article>
+            </div>
+        </section>
+
+        <section id="contact" class="max-w-3xl mx-auto text-center">
+            <p class="font-serif italic text-primary/40 text-sm mb-4">"Sculpting light and space."</p>
+            <h2 class="text-3xl font-display font-bold text-white tracking-[0.3em] mb-12">鑄未來</h2>
+            
+            <form class="space-y-10 text-left bg-glass p-8 md:p-12 rounded-3xl border border-white/5">
+                <div class="grid md:grid-cols-2 gap-8">
+                    <div>
+                        <label class="text-[10px] tracking-[0.2em] text-primary uppercase font-bold pl-4 mb-2 block">Name</label>
+                        <input type="text" placeholder="您的姓名" class="input-minimal">
+                    </div>
+                    <div>
+                        <label class="text-[10px] tracking-[0.2em] text-primary uppercase font-bold pl-4 mb-2 block">Phone</label>
+                        <input type="tel" placeholder="聯絡電話" class="input-minimal">
+                    </div>
+                </div>
+                
+                <div>
+                    <label class="text-[10px] tracking-[0.2em] text-primary uppercase font-bold pl-4 mb-2 block">Inquiry Type</label>
+                    <select class="input-minimal appearance-none text-slate-300 cursor-pointer">
+                        <option value="" disabled selected>請選擇諮詢項目...</option>
+                        <option value="visit" class="bg-zinc-900">建案預約賞屋</option>
+                        <option value="service" class="bg-zinc-900">售後維護需求</option>
+                        <option value="custom" class="bg-zinc-900">客製客變諮詢</option>
+                    </select>
+                </div>
+
+                <div>
+                    <label class="text-[10px] tracking-[0.2em] text-primary uppercase font-bold pl-4 mb-2 block">Message</label>
+                    <textarea rows="3" placeholder="請輸入留言..." class="input-minimal resize-none"></textarea>
+                </div>
+
+                <div class="text-center pt-4">
+                    <button class="bg-primary text-bg text-xs font-bold tracking-[0.4em] px-16 py-4 rounded-full hover:bg-white transition-all shadow-lg shadow-primary/20">SEND</button>
+                </div>
             </form>
-        </div>
-    </div>
-</section>
+        </section>
 
-<footer>
-    <p>哲邦建設有限公司 © 2026<br>新北市板橋區重慶路89巷2-1號 | 02-2958-2711</p>
-</footer>
+    </main>
 
-<script>
-    const isMobile = window.matchMedia("(max-width: 1024px)").matches;
-    if (isMobile) {
+    <footer class="py-12 border-t border-white/5 text-center text-[9px] tracking-[0.3em] text-slate-600 uppercase">
+        新北市板橋區重慶路89巷2-1號 <span class="mx-2">|</span> 02-2958-2711<br>
+        © 2026 Zhe Bang Construction
+    </footer>
+
+    <nav class="md:hidden fixed bottom-0 w-full glass-panel border-t border-white/10 z-50 px-8 py-3 flex justify-between text-slate-500">
+        <a href="#" class="flex flex-col items-center gap-1"><span class="material-symbols-outlined">home</span><span class="text-[9px]">首頁</span></a>
+        <a href="#masterpiece" class="flex flex-col items-center gap-1 text-primary"><span class="material-symbols-outlined">star</span><span class="text-[9px]">進行室</span></a>
+        <a href="#projects" class="flex flex-col items-center gap-1"><span class="material-symbols-outlined">domain</span><span class="text-[9px]">經典學</span></a>
+        <a href="#contact" class="flex flex-col items-center gap-1"><span class="material-symbols-outlined">mail</span><span class="text-[9px]">鑄未來</span></a>
+    </nav>
+
+    <script>
+        // 手機版滾動監聽
         const observer = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    entry.target.classList.add('is-active');
-                } else {
-                    entry.target.classList.remove('is-active');
-                }
-            });
-        }, { threshold: 0.7 });
-        document.querySelectorAll('.js-preview').forEach(target => observer.observe(target));
-    }
-    function showTab(evt, tabId) {
-        document.querySelectorAll(".tab-content").forEach(c => c.classList.remove("active"));
-        document.querySelectorAll(".tab-btn").forEach(b => b.classList.remove("active"));
-        document.getElementById(tabId).classList.add("active");
-        evt.currentTarget.classList.add("active");
-    }
-</script>
-
+            entries.forEach(entry => entry.target.classList.toggle('is-active', entry.isIntersecting));
+        }, { threshold: 0.5 });
+        document.querySelectorAll('.js-scroll-trigger').forEach(el => observer.observe(el));
+    </script>
 </body>
 </html>
